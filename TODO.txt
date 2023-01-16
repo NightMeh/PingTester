@@ -1,5 +1,4 @@
 ###TODO###
-1) Do test time in seconds
-2) Add GUI
-3) Packet Loss Calculation
-4) New graphing
+Add GUI
+Packet Loss Calculation
+New graphing

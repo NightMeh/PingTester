@@ -2,6 +2,7 @@ import os
 import time
 import numpy as np
 import matplotlib.pyplot as plt
+from clock import Clock
 class PingFinder:
     def __init__(self):
         self.minimum = 0
@@ -13,9 +14,12 @@ class PingFinder:
         self.maxlist = []
         self.avrlist = []
         self.timelist = []
+        self.clock = Clock()
+
 
     def TestPing(self,number):
-        for x in range(number):
+        self.clock.StartTimer(number)
+        while not self.clock.TimeEnded:
             self.GetPing()
             self.FindPingInfo()
             self.AppendToLists()
@@ -41,7 +45,7 @@ class PingFinder:
                 if letter == "m" and item[index+1] == "s":
                     lastIndex = index
             self.outputlist.append(item[firstIndex:lastIndex])
-        current_time = str(time.gmtime().tm_hour)+":"+str(time.gmtime().tm_min)+":"+str(time.gmtime().tm_sec)
+        current_time = self.clock
         self.outputlist.append(current_time)
 
     def AppendToLists(self):
