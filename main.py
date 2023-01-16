@@ -1,7 +1,7 @@
 from pingFinder import PingFinder
 
-def RunPingFinder():
+def RunPingFinder(number):
     pingFinder = PingFinder()
-    pingFinder.TestPing(40)
+    pingFinder.TestPing(number)
     print(pingFinder.peaklist)
     pingFinder.DrawGraph()
