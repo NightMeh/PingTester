@@ -2,3 +2,4 @@
 Add GUI
 Packet Loss Calculation
 New graphing
+Peak Detection
