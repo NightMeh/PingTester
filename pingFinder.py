@@ -69,14 +69,20 @@ class PingFinder:
         self.current_total += int(self.outputlist[2])
         if self.CheckValueAboveAverage(int(self.outputlist[1])):
             self.peakdict["Time"].append(self.outputlist[3])
-            self.peakdict["Ping"].append(self.outputlist[1])
+            self.peakdict["Ping"].append(self.clock.elapsed_time)
 
 
     def CheckValueAboveAverage(self,value):
+        print(value,(self.current_total/self.current_numberofchecks)*self.MODIFIER)
         if value >= (self.current_total/self.current_numberofchecks)*self.MODIFIER and value != self.avrlist[0]:
             return True
         else:
             return False
+
+    def WorkOutPeakDifferences(self):
+        total = 0
+        for item in self.peakdict["Time"]:
+            item
 
 
     def DrawGraph(self):
@@ -86,9 +92,11 @@ class PingFinder:
         outputdict["Maximum"] = self.maxlist
         outputdict["Time"] = self.timelist
         sns.set_theme(style="ticks")
-        sns.lineplot(data=outputdict,x="Time", y="Maximum")
-        sns.lineplot(data=outputdict,x="Time", y="Average")
-        sns.lineplot(data=outputdict,x="Time", y="Minimum")
+        plt.plot(self.timelist,self.maxlist,label="Maximum",color="r")
+        plt.plot(self.timelist,self.avrlist,label="Average",color="g")
+        plt.plot(self.timelist,self.minlist,label="Minimum",color="b")
         plt.ylim(bottom=0,top=300)
         plt.xlim(left=0)
+        plt.legend()
         plt.show()
+

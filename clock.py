@@ -20,8 +20,6 @@ class Clock:
         self.elapsed_time += self.t2 - self.t1
         lasttime = self.t2-self.t1
         self.t1 = time.perf_counter()
-        print(self.elapsed_time,"here")
-        print(self.elapsed_time,self.target_time)
         if self.elapsed_time >= self.target_time or (lasttime + self.elapsed_time) > self.target_time:
             self.end_time = self
             print("The Time ended at" , self.end_time)
