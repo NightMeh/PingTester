@@ -18,7 +18,11 @@ class PingFinder:
         self.current_total = 0
         self.current_numberofchecks = 0
         self.peaklist = []
-        self.MODIFIER = 2.5
+        self.MODIFIER = 2
+        self.peakdict = {
+            "Time":[],
+            "Ping":[]
+        }
 
 
     def TestPing(self,number):
@@ -37,12 +41,10 @@ class PingFinder:
         cmd = "ping www.google.co.uk"
         output_stream = os.popen(cmd)
         self.output = output_stream.read()
-        print(self.output)
 
         
     def FindPingInfo(self):
         bottomRowIndex = self.output.index("Minimum")
-        print(bottomRowIndex)
         self.FindPingValues(self.output[bottomRowIndex:])
 
     def FindPingValues(self,bottomRow):
@@ -66,11 +68,11 @@ class PingFinder:
         self.timelist.append(self.outputlist[3])
         self.current_total += int(self.outputlist[2])
         if self.CheckValueAboveAverage(int(self.outputlist[1])):
-            self.peaklist.append([self.outputlist[3],int(self.outputlist[1])])
+            self.peakdict["Time"].append(self.outputlist[3])
+            self.peakdict["Ping"].append(self.outputlist[1])
 
 
     def CheckValueAboveAverage(self,value):
-        print(value,((self.current_total/self.current_numberofchecks)*self.MODIFIER))
         if value >= (self.current_total/self.current_numberofchecks)*self.MODIFIER and value != self.avrlist[0]:
             return True
         else:
@@ -78,31 +80,15 @@ class PingFinder:
 
 
     def DrawGraph(self):
-        """fig = plt.figure()
-        ax = fig.add_subplot(1,1,1)
-        ax.spines["left"].set_position("zero")
-        ax.spines["bottom"].set_position("zero")
-        ax.spines["right"].set_color("none")
-        ax.spines["top"].set_color("none")
-        plt.plot(self.timelist,self.minlist,label="Minimum",color="b")
-        plt.plot(self.timelist,self.maxlist,label="Maximum",color="r")
-        plt.plot(self.timelist,self.avrlist,label="Average",color="g")
-        plt.ylim(bottom=0)
-        plt.xlim(left=0)
-        plt.xlabel("Time")
-        plt.ylabel("Ping")
-        plt.legend()
-        plt.show()"""
-
         outputdict = {}
         outputdict["Minimum"] = self.minlist
         outputdict["Average"] = self.avrlist
         outputdict["Maximum"] = self.maxlist
         outputdict["Time"] = self.timelist
         sns.set_theme(style="ticks")
-        sns.lineplot(data=outputdict,x="Time", y="Minimum")
         sns.lineplot(data=outputdict,x="Time", y="Maximum")
         sns.lineplot(data=outputdict,x="Time", y="Average")
+        sns.lineplot(data=outputdict,x="Time", y="Minimum")
         plt.ylim(bottom=0,top=300)
         plt.xlim(left=0)
         plt.show()
